@@ -4,16 +4,75 @@ class List extends React.Component {
     this.changeHandler = this.changeHandler.bind( this );
     this.clickHandler = this.clickHandler.bind( this );
     this.removeHandler = this.removeHandler.bind( this );
+    this.submitHandler = this.submitHandler.bind( this );
+    this.canvas = null;
+    this.ctx = null;
+
+    this.pen={x:33,y:234}
+
+    this.text = "christean sux ballz⚽⚽⚽⚽⚽"
+
+    this.modText = ""
+    this.modTextArr = []
   }
+
 
   state = {
     list : [],
     word : ""
   }
+  componentDidMount(){
+    this.canvas = document.getElementById("pies");
+    this.canvas.width=1000;
+    this.canvas.height=1000;
+    this.ctx = this.canvas.getContext("2d");
+
+    setInterval(this.runDMC,50)
+  }
+
+  runDMC=()=>{
+
+
+
+    let length = this.modTextArr.length;
+
+    const textLens = this.text.length;
+
+    if (length<textLens){
+      this.modTextArr.push(this.text[length])
+    } else {
+      this.modTextArr=[]
+    }
+
+    this.modText = this.modTextArr.join("")
+
+    this.ctx.clearRect(0,0,1000,1000)
+
+ //  this.ctx.fillRect(this.pen.x,this.pen.y,66,88)
+
+     this.ctx.fillText(this.modText,this.pen.x,this.pen.y)
+
+
+  }
+
+  moveMover=e=>{
+    console.log(e.clientX,this.pen)
+
+    this.pen.x = e.clientX
+    this.pen.y = e.clientY
+
+
+  }
 
   changeHandler(event){
     this.setState({word:event.target.value});
     console.log("change", event.target.value);
+  }
+
+  submitHandler(event) {
+    if (event.keyCode === 13) {
+      this.clickHandler(event)
+    }
   }
 
   clickHandler(event) {
@@ -70,9 +129,12 @@ class List extends React.Component {
       // console.log("rendering");
       return (
         <div className="list">
-          <input id="form" onChange={this.changeHandler} value={this.state.word}/>
+          <canvas onMouseMove={this.moveMover} id="pies" style={{width:"100vw",height:"100vh"}}>
+          </canvas>
+
+          <input id="form" onChange={this.changeHandler} onKeyDown={this.submitHandler} value={this.state.word}/>
           <button onClick={this.clickHandler}>gimme</button>
-          <div id="error" style={{color: 'red'}, {display: 'none'}}>Please input a value between 1 and 200 characters</div>
+          <div id="error" style={{color: 'red'}, {display: 'none'}}>input a value between 1 and 200 characters can or not</div>
           <ul>
             {listItems}
           </ul>
