@@ -47,15 +47,19 @@ class List extends React.Component {
   }
 
   render() {
+
+      let now = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
       // render the list with a map() here
       let listItems = this.state.list.map( (item, index) =>{
         return (
           <li key={item + index}>
             {item}
             <button value={index} onClick={this.removeHandler}>idw this alr</button>
+            <span>{now}</span>
           </li>
           )
       })
+
       // console.log("rendering");
       return (
         <div className="list">
