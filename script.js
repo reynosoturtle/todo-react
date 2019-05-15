@@ -20,8 +20,16 @@ class List extends React.Component {
     let newValue = this.state.word;
     let stateList = this.state.list;
     let empty = "";
+    let index = event.target.value;
+    let now = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+
     if (newValue.length > 0 && newValue.length < 201) {
-      stateList.push(newValue);
+
+      let array = []
+      array.push(newValue)
+      array.push(now)
+
+      stateList.push(array);
       // console.log('newvalue',newValue)
       // console.log('statelist',stateList)
       this.setState({word: empty, list: stateList})
@@ -48,14 +56,13 @@ class List extends React.Component {
 
   render() {
 
-      let now = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
       // render the list with a map() here
       let listItems = this.state.list.map( (item, index) =>{
         return (
           <li key={item + index}>
-            {item}
+            {item[0]}
             <button value={index} onClick={this.removeHandler}>idw this alr</button>
-            <span>{now}</span>
+            <span>{item[1]}</span>
           </li>
           )
       })
